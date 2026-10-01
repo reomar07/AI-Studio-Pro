@@ -27,3 +27,5 @@ To run this application from the source code, you will need Python 3 installed o
 ```bash
 git clone [https://github.com/your-username/AI-Studio-Pro.git](https://github.com/your-username/AI-Studio-Pro.git)
 cd AI-Studio-Pro
+
+**2. Install the required Python packages:**
