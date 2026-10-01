@@ -25,7 +25,23 @@ To run this application from the source code, you will need Python 3 installed o
 
 **1. Clone the repository:**
 ```bash
-git clone [https://github.com/your-username/AI-Studio-Pro.git](https://github.com/your-username/AI-Studio-Pro.git)
+git clone [https://github.com/reomar07/AI-Studio-Pro.git](https://github.com/reomar07/AI-Studio-Pro.git)
 cd AI-Studio-Pro
+```
+2. Install the required Python packages:
+```bash
+pip install pywebview openai rank_bm25 duckduckgo-search PyMuPDF python-docx
+```
+3. Run the application:
+```bash
+python app.py
+```
+* **📦 Building the Executable (.exe)**
+* To package the application into a single standalone Windows executable, use PyInstaller. Make sure you have your `assets` folder (containing `icon.ico` and `logo.png`) in the root directory.
+```bash
+pip install pyinstaller
+pyinstaller --noconsole --onefile --icon="assets/icon.ico" --collect-all webview app.py
+```
+Move the `assets` folder and `index.html` into the generated `dist` folder alongside the new `app.exe` to run it.
 
-**2. Install the required Python packages:**
+
