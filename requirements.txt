@@ -1,0 +1,8 @@
+pywebview
+openai
+rank_bm25
+ddgs
+pymupdf
+python-docx
+keyring
+pillow
