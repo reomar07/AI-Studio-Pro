@@ -43,5 +43,5 @@ pip install pyinstaller
 pyinstaller --noconsole --onefile --icon="assets/icon.ico" --collect-all webview app.py
 ```
 Move the `assets` folder and `index.html` into the generated `dist` folder alongside the new `app.exe` to run it.
-
+** The easy way just run the `build_exe.bat` and navigate to the `dist` folder and `AI Studio Pro` than run `AI Studio Pro.exe`
 
