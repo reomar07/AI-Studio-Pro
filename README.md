@@ -45,7 +45,7 @@ python app-2.py
 
 ## To build a standalone AI_Studio_Pro_Setup.exe:
 
-* You must have the `inno setup` installed on your desktop and make sure to run the `build_exe.bat` first so the `dist` folder is generated.
+* You must have the `innosetup-6.7.3` installed on your desktop and make sure to run the `build_exe.bat` first so the `dist` folder is generated.
    
 * Run the `build_installer.bat` and you will find the standalone `AI_Studio_Pro_Setup.exe` in the new `installer` folder.
 
