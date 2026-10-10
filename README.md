@@ -34,17 +34,23 @@ pip install pywebview openai rank_bm25 duckduckgo-search PyMuPDF python-docx
 ```
 3. Run the application:
 ```bash
-python app.py
+python app-2.py
 ```
 * **📦 Building the Executable (.exe)**
 * To package the application into a single standalone Windows executable, use PyInstaller. Make sure you have your `assets` folder (containing `icon.ico` and `logo.png`) in the root directory.
 ```bash
 pip install pyinstaller
-pyinstaller --noconsole --onefile --icon="assets/icon.ico" --collect-all webview app.py
+pyinstaller --noconsole --onefile --icon="assets/icon.ico" --collect-all webview app-2.py
 ```
 Move the `assets` folder and `index.html` into the generated `dist` folder alongside the new `app.exe` to run it.
 
 * **The easy way:** just run the `build_exe.bat` and navigate to the `dist` folder and `AI Studio Pro` than run `AI Studio Pro.exe`
+
+** to build standalone AI_Studio_Pro_Setup.exe:**
+
+* You must have the inno setup installed and make sure to run the `build_exe.bat` firs so the `dist` folder is generated.
+   
+* Run the `build_installer.bat` and you will find the standalone `AI_Studio_Pro_Setup.exe` in the new `installer` folder.
 
 ## the pull requests are very welcomed. 
 
