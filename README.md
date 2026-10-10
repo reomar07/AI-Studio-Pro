@@ -46,7 +46,7 @@ Move the `assets` folder and `index.html` into the generated `dist` folder along
 
 * **The easy way:** just run the `build_exe.bat` and navigate to the `dist` folder and `AI Studio Pro` than run `AI Studio Pro.exe`
 
-** to build standalone AI_Studio_Pro_Setup.exe:**
+* ** to build standalone AI_Studio_Pro_Setup.exe:**
 
 * You must have the inno setup installed and make sure to run the `build_exe.bat` firs so the `dist` folder is generated.
    
