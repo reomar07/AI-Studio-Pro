@@ -44,9 +44,10 @@ pyinstaller --noconsole --onefile --icon="assets/icon.ico" --collect-all webview
 ```
 Move the `assets` folder and `index.html` into the generated `dist` folder alongside the new `app.exe` to run it.
 
-* **The easy way:** just run the `build_exe.bat` and navigate to the `dist` folder and `AI Studio Pro` than run `AI Studio Pro.exe`
+* **The easy way:**
+* just run the `build_exe.bat` and navigate to the `dist` folder and `AI Studio Pro` than run `AI Studio Pro.exe`
 
-* ** to build standalone AI_Studio_Pro_Setup.exe:**
+* **to build standalone AI_Studio_Pro_Setup.exe:**
 
 * You must have the inno setup installed and make sure to run the `build_exe.bat` firs so the `dist` folder is generated.
    
