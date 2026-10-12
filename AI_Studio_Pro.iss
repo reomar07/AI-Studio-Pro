@@ -6,7 +6,7 @@
 ; ===========================================================================
 
 #define MyAppName "AI Studio Pro"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "AI Studio Pro"
 #define MyAppExeName "AI Studio Pro.exe"
 #define MyBuildDir "dist\AI Studio Pro"
