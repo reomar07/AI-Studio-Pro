@@ -1,0 +1,24 @@
+# Generated Python files
+__pycache__/
+*.py[cod]
+
+# Local environments and builds
+.venv/
+venv/
+/build/
+/dist/
+/installer/
+/vendor/
+
+# Local private data: never commit credentials or chat history
+/universal_config.json
+/chat_history.json
+/chat_settings.json
+/chat_metadata.json
+/prompts.json
+/webview_cache/
+/attachments/
+/exports/
+/images/
+.env
+.env.*

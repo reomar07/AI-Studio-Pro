@@ -33,13 +33,14 @@ jobs:
           python -m compileall -q backend app-2.py
           python -m unittest discover -s tests -v
           for f in frontend/scripts/*.js; do node --check "$f"; done
-      - name: Commit verified generated modules to this branch only
+      - name: Commit verified modules and remove generated caches from this branch only
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app-2.py index.html build_exe.bat backend frontend REFACTOR_REPORT.json
+          git rm -r --cached --ignore-unmatch backend/__pycache__
+          git add .gitignore app-2.py index.html build_exe.bat backend frontend REFACTOR_REPORT.json
           if ! git diff --cached --quiet; then
-            git commit -m "Refactor 1.2.1 into backend modules and frontend assets"
+            git commit -m "Keep modular source free of generated Python caches"
             git push origin HEAD:refactor/modular-foundation
           fi
       - name: Prepare downloadable source package
