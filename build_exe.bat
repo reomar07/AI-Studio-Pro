@@ -24,6 +24,7 @@ REM The program looks for these files NEXT TO the .exe, so copy them there.
 copy /Y index.html "dist\AI Studio Pro\index.html"
 if exist assets xcopy /E /I /Y assets "dist\AI Studio Pro\assets"
 if exist vendor xcopy /E /I /Y vendor "dist\AI Studio Pro\vendor"
+if exist frontend xcopy /E /I /Y frontend "dist\AI Studio Pro\frontend"
 
 REM Ask Windows to refresh its icon pictures so File Explorer shows the new icon
 ie4uinit.exe -show
