@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const {normalize,foreground,palettes}=require('../frontend/scripts/appearance.js');
+assert.equal(Object.keys(palettes).length,7);
+assert.deepEqual(normalize(null),{theme:'graphite',accent:'#3b82f6',font_size:14,chat_width:900});
+assert.equal(normalize({theme:'__proto__',accent:'red;bad',font_size:100,chat_width:-1}).theme,'graphite');
+assert.equal(normalize({font_size:100}).font_size,22);
+assert.equal(normalize({chat_width:-1}).chat_width,650);
+assert.equal(normalize({font_size:'bad'}).font_size,14);
+assert.equal(foreground('#ffffff'),'#000000');
+assert.equal(foreground('#000000'),'#ffffff');
+console.log('Appearance normalization and contrast checks passed.');

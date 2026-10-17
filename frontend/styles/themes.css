@@ -1,0 +1,39 @@
+/* Scoped theme layer; does not change the base layout or markdown renderer. */
+html[data-aspro-theme] { color-scheme: light; }
+html[data-aspro-theme].dark { color-scheme: dark; }
+html[data-aspro-theme] body, html[data-aspro-theme] main {background:var(--ui-bg)!important;color:var(--ui-text)!important;}
+html[data-aspro-theme] aside, html[data-aspro-theme] main>header {background:var(--ui-sidebar)!important;color:var(--ui-text)!important;}
+html[data-aspro-theme] [class*="bg-zinc-"],html[data-aspro-theme] [class*="bg-white"],html[data-aspro-theme] [class*="bg-[#"] {background-color:var(--ui-surface)!important;}
+html[data-aspro-theme] [class*="text-zinc-"],html[data-aspro-theme] [class~="text-black"] {color:var(--ui-text)!important;}
+html[data-aspro-theme] [class*="text-zinc-400"],html[data-aspro-theme] [class*="text-zinc-500"] {color:var(--ui-muted)!important;}
+html[data-aspro-theme] [class*="border-zinc-"],html[data-aspro-theme] [class*="border-[#"] {border-color:var(--ui-border)!important;}
+html[data-aspro-theme] input,html[data-aspro-theme] textarea,html[data-aspro-theme] select {color:var(--ui-text)!important;accent-color:var(--ui-accent);}
+html[data-aspro-theme] [class*="bg-blue-600"] {background:var(--ui-accent)!important;color:var(--ui-accent-text)!important;}
+html[data-aspro-theme] [class*="border-blue-500"] {border-color:var(--ui-accent)!important;}
+html[data-aspro-theme] .prose a {color:var(--ui-accent)!important;}
+html[data-aspro-theme] .prose blockquote {border-color:var(--ui-accent);}
+html[data-aspro-theme] #chat-messages .prose,html[data-aspro-theme] #prompt-input {font-size:var(--ui-font)!important;}
+html[data-aspro-theme] #chat-messages .prose h1 {font-size:1.7em;} html[data-aspro-theme] #chat-messages .prose h2 {font-size:1.4em;} html[data-aspro-theme] #chat-messages .prose h3 {font-size:1.2em;}
+html[data-aspro-theme] #chat-messages>div {max-width:var(--ui-width);margin-left:auto;margin-right:auto;}
+html[data-aspro-theme] main>footer>div {max-width:var(--ui-width);}
+.aspro-panel {width:min(440px,calc(100vw - 32px));max-height:85vh;overflow:auto;border:1px solid var(--ui-border);border-radius:16px;padding:24px;background:var(--ui-sidebar);color:var(--ui-text);box-shadow:0 20px 80px #0008;}
+.aspro-panel::backdrop {background:#0008;backdrop-filter:blur(4px);}
+.aspro-panel header {display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.aspro-panel h2 {font-size:20px;font-weight:700;}
+.aspro-panel label {display:block;margin:16px 0;font-size:14px;}
+.aspro-panel select {display:block;width:100%;padding:8px;background:var(--ui-surface);border:1px solid var(--ui-border);border-radius:6px;margin-top:6px;}
+.aspro-panel input[type=range] {display:block;width:100%;margin-top:10px;}
+.aspro-panel input[type=color] {display:block;width:72px;height:36px;margin-top:6px;}
+.aspro-panel p {font-size:12px;color:var(--ui-muted);margin:14px 0;line-height:1.5;}
+.aspro-panel dt {font-weight:600;margin-top:12px;} .aspro-panel dd {font-size:13px;color:var(--ui-muted);}
+.aspro-panel #aspro-reset,.aspro-toolbar {border:1px solid var(--ui-border);border-radius:7px;padding:5px 9px;background:var(--ui-surface);color:var(--ui-text);font-size:12px;}
+.aspro-toolbar {margin-right:4px;white-space:nowrap;}
+#aspro-bottom {position:absolute;right:24px;z-index:25;border:1px solid var(--ui-border);border-radius:20px;padding:7px 14px;background:var(--ui-accent);color:var(--ui-accent-text);box-shadow:0 3px 14px #0004;font-size:13px;}
+#aspro-context {position:fixed;z-index:200;width:170px;padding:5px;background:var(--ui-sidebar);color:var(--ui-text);border:1px solid var(--ui-border);border-radius:9px;box-shadow:0 8px 30px #0006;}
+#aspro-context button {display:block;width:100%;text-align:left;padding:7px 10px;border-radius:5px;font-size:13px;}
+#aspro-context button:hover:not(:disabled),#aspro-context button:focus-visible {background:var(--ui-surface);outline:2px solid var(--ui-accent);}
+#aspro-context button:disabled {opacity:.4;}
+#aspro-context[hidden],#aspro-bottom[hidden] {display:none!important;}
+@media(max-width:900px) {.aspro-toolbar {font-size:11px;padding:4px;} }
+
+html[data-aspro-theme] #action-btn:not(.bg-red-500) {background:var(--ui-accent)!important;color:var(--ui-accent-text)!important;}
