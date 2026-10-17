@@ -25,9 +25,22 @@ jobs:
         run: |
           for f in frontend/scripts/*.js; do node --check "$f"; done
           node tests/appearance_core.test.cjs
+          node --check tests/themes_browser.cjs
+      - name: Install browser for real DOM tests
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Test the actual page and preview controls
+        run: node tests/themes_browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: themes-browser-diagnostics
+          path: test-results/
+          if-no-files-found: ignore
       - name: Prepare source package without dependencies or private data
-        run: git archive --format=zip --output=AI-Studio-Pro-themes-preview.zip HEAD
+        run: git archive --format=zip --output=AI-Studio-Pro-themes-preview-2.zip HEAD
       - uses: actions/upload-artifact@v4
         with:
-          name: AI-Studio-Pro-themes-preview-source
-          path: AI-Studio-Pro-themes-preview.zip
+          name: AI-Studio-Pro-themes-preview-2-source
+          path: AI-Studio-Pro-themes-preview-2.zip
