@@ -1,0 +1,51 @@
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
+    ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+    .slider-custom { appearance: none; -webkit-appearance: none; height: 4px; border-radius: 2px; background: #d4d4d8; outline: none; }
+    .dark .slider-custom { background: #3f3f46; }
+    .slider-custom::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #3b82f6; cursor: pointer; border: 2px solid white; }
+    .prose pre { padding: 0; margin: 0.75rem 0; background: transparent; }
+    .code-container { border: 1px solid #e4e4e7; border-radius: 0.5rem; overflow: hidden; background: #f4f4f5; }
+    .dark .code-container { border-color: #3f3f46; background: #121215; }
+    .code-header { background: #e4e4e7; padding: 0.35rem 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: #52525b; }
+    .dark .code-header { background: #1f1f23; color: #a1a1aa; border-bottom: 1px solid #3f3f46; }
+    .code-output { background: #ffffff; color: #059669; font-family: monospace; font-size: 0.75rem; padding: 0.75rem; border-top: 1px solid #e4e4e7; white-space: pre-wrap; max-height: 12rem; overflow-y: auto; }
+    .dark .code-output { background: #000000; color: #34d399; border-top-color: #3f3f46; }
+    #drag-overlay { transition: opacity 0.2s; pointer-events: none; }
+    .drag-active #drag-overlay { opacity: 1; pointer-events: none; }
+    .recording { animation: pulse-red 1.5s infinite; color: #ef4444 !important; }
+    @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    #empty-state.hidden, #chat-messages.hidden { display: none !important; }
+    .prose { color: inherit; }
+
+    /* Markdown styling for chat replies (Tailwind's reset removes these defaults) */
+    .prose h1 { font-size: 1.5rem; font-weight: 700; margin: 1.1rem 0 0.5rem; }
+    .prose h2 { font-size: 1.25rem; font-weight: 700; margin: 1rem 0 0.5rem; }
+    .prose h3 { font-size: 1.1rem; font-weight: 600; margin: 0.9rem 0 0.4rem; }
+    .prose h4, .prose h5, .prose h6 { font-size: 1rem; font-weight: 600; margin: 0.8rem 0 0.3rem; }
+    .prose p { margin: 0.6rem 0; line-height: 1.65; }
+    .prose ul { list-style: disc; padding-left: 1.5rem; margin: 0.5rem 0; }
+    .prose ol { list-style: decimal; padding-left: 1.5rem; margin: 0.5rem 0; }
+    .prose li { margin: 0.25rem 0; line-height: 1.6; }
+    .prose li > p { margin: 0.2rem 0; }
+    .prose hr { border: 0; border-top: 1px solid #d4d4d8; margin: 1rem 0; }
+    .dark .prose hr { border-top-color: #3f3f46; }
+    .prose blockquote { border-left: 3px solid #3b82f6; padding-left: 0.9rem; margin: 0.8rem 0; color: #71717a; }
+    .dark .prose blockquote { color: #a1a1aa; }
+    .prose a { color: #2563eb; text-decoration: underline; cursor: pointer; }
+    .dark .prose a { color: #60a5fa; }
+    .prose strong { font-weight: 700; }
+    .prose em { font-style: italic; }
+    .prose table { border-collapse: collapse; margin: 0.8rem 0; display: block; overflow-x: auto; max-width: 100%; }
+    .prose th, .prose td { border: 1px solid #d4d4d8; padding: 0.4rem 0.75rem; text-align: left; }
+    .dark .prose th, .dark .prose td { border-color: #3f3f46; }
+    .prose th { background: rgba(127, 127, 127, 0.15); font-weight: 600; }
+    .prose :not(pre) > code { background: rgba(127, 127, 127, 0.2); padding: 0.1rem 0.35rem; border-radius: 0.3rem; font-size: 0.85em; }
+    .prose img { max-width: 100%; border-radius: 0.5rem; }
+    .prose > :first-child { margin-top: 0; }
+    .prose > :last-child { margin-bottom: 0; }
+  

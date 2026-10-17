@@ -1,0 +1,51 @@
+name: Modular foundation
+on:
+  push:
+    branches: [refactor/modular-foundation]
+    paths: [tools/modularize.py, tests/test_modular.py, .github/workflows/modular-foundation.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: modular-foundation
+  cancel-in-progress: false
+jobs:
+  refactor:
+    if: github.ref == 'refs/heads/refactor/modular-foundation'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Extract modules (only from the recorded baseline)
+        run: |
+          if [ ! -f backend/engine.py ]; then
+            python tools/modularize.py
+          fi
+      - name: Install application dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Verify structure and disposable-home engine startup
+        run: |
+          python -m compileall -q backend app-2.py
+          python -m unittest discover -s tests -v
+          for f in frontend/scripts/*.js; do node --check "$f"; done
+      - name: Commit verified modules and remove generated caches from this branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -r --cached --ignore-unmatch backend/__pycache__
+          git add .gitignore app-2.py index.html build_exe.bat backend frontend REFACTOR_REPORT.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Keep modular source free of generated Python caches"
+            git push origin HEAD:refactor/modular-foundation
+          fi
+      - name: Prepare downloadable source package
+        run: git archive --format=zip --output=AI-Studio-Pro-modular.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AI-Studio-Pro-modular-source
+          path: AI-Studio-Pro-modular.zip
