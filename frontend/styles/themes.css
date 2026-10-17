@@ -1,8 +1,9 @@
 /* Scoped theme layer; does not change the base layout or markdown renderer. */
 html[data-aspro-theme] { color-scheme: light; }
 html[data-aspro-theme].dark { color-scheme: dark; }
-html[data-aspro-theme] body, html[data-aspro-theme] main {background:var(--ui-bg)!important;color:var(--ui-text)!important;}
-html[data-aspro-theme] aside, html[data-aspro-theme] main>header {background:var(--ui-sidebar)!important;color:var(--ui-text)!important;}
+/* [class] makes shell rules more specific than the generic utility-class rules. */
+html[data-aspro-theme] body[class], html[data-aspro-theme] main[class] {background:var(--ui-bg)!important;color:var(--ui-text)!important;}
+html[data-aspro-theme] aside[class], html[data-aspro-theme] main>header[class] {background:var(--ui-sidebar)!important;color:var(--ui-text)!important;}
 html[data-aspro-theme] [class*="bg-zinc-"],html[data-aspro-theme] [class*="bg-white"],html[data-aspro-theme] [class*="bg-[#"] {background-color:var(--ui-surface)!important;}
 html[data-aspro-theme] [class*="text-zinc-"],html[data-aspro-theme] [class~="text-black"] {color:var(--ui-text)!important;}
 html[data-aspro-theme] [class*="text-zinc-400"],html[data-aspro-theme] [class*="text-zinc-500"] {color:var(--ui-muted)!important;}
