@@ -17,7 +17,7 @@ if exist icon.ico set ICON=--icon icon.ico
 if exist assets\icon.ico set ICON=--icon assets\icon.ico
 
 echo Building (this takes a few minutes)...
-python -m PyInstaller --noconfirm --clean %MODE% %ICON% --name "AI Studio Pro" --collect-all webview --collect-all pymupdf --collect-all docx --collect-submodules ddgs --collect-submodules keyring app-2.py
+python -m PyInstaller --noconfirm --clean %MODE% %ICON% --name "AI Studio Pro" --collect-all webview --collect-all pymupdf --collect-all docx --collect-submodules ddgs --collect-submodules keyring --collect-all spellchecker --copy-metadata pyspellchecker app-2.py
 if errorlevel 1 goto :failed
 
 REM The program looks for these files NEXT TO the .exe, so copy them there.

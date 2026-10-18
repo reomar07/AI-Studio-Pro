@@ -6,8 +6,9 @@ from .history import HistoryMixin
 from .documents import DocumentsMixin
 from .search import SearchMixin
 from .generation import GenerationMixin
+from .spelling import SpellingMixin
 
-class ChatEngine(StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin):
+class ChatEngine(StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin):
     def __init__(self):
         self.file_lock = threading.Lock()
         self.stream_lock = threading.Lock()

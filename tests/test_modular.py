@@ -24,7 +24,10 @@ class ModularTests(unittest.TestCase):
                         if isinstance(node, ast.FunctionDef):
                             self.assertNotIn(node.name, actual)
                             actual[node.name] = hashlib.sha256(ast.dump(node, include_attributes=False).encode()).hexdigest()
-        self.assertEqual(actual, report["method_ast_sha256"])
+        # New feature methods are allowed; every original method must still match.
+        expected = report["method_ast_sha256"]
+        self.assertTrue(set(expected).issubset(actual))
+        self.assertEqual({name: actual[name] for name in expected}, expected)
 
     def test_local_frontend_files_exist(self):
         page = (ROOT / "index.html").read_text(encoding="utf-8")
