@@ -6,3 +6,4 @@ pymupdf
 python-docx
 keyring
 pillow
+pyspellchecker==0.9.1

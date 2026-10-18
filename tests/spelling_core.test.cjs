@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict');
+const {selectedWord}=require('../frontend/scripts/spelling.js');
+assert.deepEqual(selectedWord('say helllo now',4,10),{start:4,end:10,word:'helllo'});
+assert.deepEqual(selectedWord('say helllo now',7,7),{start:4,end:10,word:'helllo'});
+assert.equal(selectedWord('two words',0,9),null);
+assert.equal(selectedWord('TLC2',0,4),null);
+assert.equal(selectedWord('مرحبا',0,5),null);
+assert.equal(selectedWord('éléphant',0,8).word,'éléphant');
+assert.equal(selectedWord('word',-1,2),null);
+console.log('Spelling word-boundary and input checks passed.');
