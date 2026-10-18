@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict');
+const {normalize,cleanText,guessLanguage,splitText,chooseVoice}=require('../frontend/scripts/speech.js');
+const p=normalize(null);assert.equal(p.rate,1);assert.equal(p.allowRemote,false);
+assert.equal(normalize({rate:9}).rate,2);assert.equal(normalize({rate:'bad'}).rate,1);
+assert.equal(normalize({language:'bad'}).language,'auto');
+assert.equal(guessLanguage('Hello world, how are you today?'),'en');
+assert.equal(guessLanguage('Bonjour, vous pouvez lire les réponses en français.'),'fr');
+assert.equal(guessLanguage('مرحبا بكم هذا اختبار للصوت باللغة العربية'),'ar');
+const cleaned=cleanText('## Hello **world** [Link](https://example.com)\n```python\nprint(1)\n```');
+assert.ok(cleaned.includes('Hello world Link'));assert.ok(!cleaned.includes('print'));assert.ok(!cleaned.includes('https:'));
+assert.ok(cleanText('```python\nprint(1)\n```',false).includes('print(1)'));
+const long='Hello world. '.repeat(200),chunks=splitText(long);assert.ok(chunks.every(x=>x.length<=300));assert.equal(chunks.join(' ').replace(/\s/g,''),long.replace(/\s/g,''));
+const list=[{voiceURI:'e',lang:'en-US',localService:true},{voiceURI:'f',lang:'fr-FR',localService:true},{voiceURI:'r',lang:'ar-SA',localService:false}];
+assert.equal(chooseVoice(list,'fr',p).voiceURI,'f');assert.equal(chooseVoice(list,'ar',p),null);
+assert.equal(chooseVoice(list,'ar',normalize({allowRemote:true})).voiceURI,'r');
+console.log('Voice cleanup, language matching, chunking and opt-in tests passed.');
