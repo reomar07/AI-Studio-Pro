@@ -1,4 +1,4 @@
-/* Real menu DOM with simulated dictionary API. No provider calls. */
+/* Real menu DOM with simulated dictionary API; verifies both module load orders. */
 const {chromium}=require('playwright');
 const http=require('node:http'),path=require('node:path'),assert=require('node:assert/strict');
 (async()=>{
@@ -14,14 +14,20 @@ const http=require('node:http'),path=require('node:path'),assert=require('node:a
     return {ok:true,message:'Choose a replacement:',suggestions:word==='Bonjor'?['Bonjour']:['hello']};
    }}};
   });
-  await page.goto('http://127.0.0.1:'+server.address().port);
+  const address='http://127.0.0.1:'+server.address().port;
+  await page.goto(address);
   await page.addStyleTag({path:path.resolve('frontend/styles/themes.css')});
   await page.addScriptTag({path:path.resolve('frontend/scripts/context_menu.js')});
-  await page.addScriptTag({path:path.resolve('frontend/scripts/spelling.js')});
   const field=page.locator('#first');
   const settle=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
   async function menu(value,start,end){await field.fill(value);await field.evaluate((el,r)=>{el.focus({preventScroll:true});el.setSelectionRange(r[0],r[1]);},[start,end]);await settle();await field.dispatchEvent('contextmenu',{clientX:20,clientY:20});await settle();}
-  await menu('say helllo now',4,10);await page.locator('#aspro-context').getByRole('menuitem',{name:'hello',exact:true}).click();
+  await menu('helllo',0,6);
+  assert.ok((await page.locator('#aspro-context').textContent()).includes('Spelling (offline): module is not loaded.'));
+  await page.keyboard.press('Escape');
+  await page.addScriptTag({path:path.resolve('frontend/scripts/spelling.js')});
+  await menu('say helllo now',4,10);
+  assert.equal(await page.locator('[data-spelling-section="2"]').count(),1);
+  await page.locator('#aspro-context').getByRole('menuitem',{name:'hello',exact:true}).click();
   assert.equal(await field.inputValue(),'say hello now');assert.deepEqual(await page.evaluate(()=>window.requests[0]),{word:'helllo',language:'en'});
   await menu('Bonjor',0,6);await page.getByLabel('Spelling language').selectOption('fr');
   await page.locator('#aspro-context').getByRole('menuitem',{name:'Bonjour',exact:true}).click();assert.equal(await field.inputValue(),'Bonjour');
@@ -36,6 +42,12 @@ const http=require('node:http'),path=require('node:path'),assert=require('node:a
   await page.keyboard.press('Escape');const count=await page.evaluate(()=>window.requests.length);
   await page.locator('#private').fill('private');await page.locator('#private').dispatchEvent('contextmenu',{clientX:20,clientY:20});await settle();
   assert.equal(await page.evaluate(()=>window.requests.length),count);assert.equal(await page.locator('#aspro-context').isVisible(),false);
-  assert.deepEqual(errors,[]);console.log('Spelling menu replacement, language selection, stale-result and password safety checks passed.');
+  await page.reload();
+  await page.addStyleTag({path:path.resolve('frontend/styles/themes.css')});
+  await page.addScriptTag({path:path.resolve('frontend/scripts/spelling.js')});
+  await page.addScriptTag({path:path.resolve('frontend/scripts/context_menu.js')});
+  await menu('helllo',0,6);await page.locator('#aspro-context').getByRole('menuitem',{name:'hello',exact:true}).click();
+  assert.equal(await field.inputValue(),'hello');
+  assert.deepEqual(errors,[]);console.log('Direct spelling hook passed in both load orders, including fallback, stale-result and password safety checks.');
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e);process.exitCode=1;});

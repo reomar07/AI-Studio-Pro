@@ -1,4 +1,4 @@
-/* Editing menu. Never cut from replies or read passwords. */
+/* Editing menu with an explicit spelling extension hook. */
 (function(){
   'use strict';
   function init(){
@@ -27,6 +27,7 @@
         } else if((name==='undo' || name==='redo') && s.edit){restore(s);document.execCommand(name);}
       }catch(e){message('Clipboard access was blocked. Use Ctrl+C, Ctrl+X or Ctrl+V in the text field instead.');}
     }
+    function spellingMessage(text){const p=document.createElement('p');p.textContent='Spelling (offline): '+text;p.style.cssText='font-size:12px;padding:8px;border-top:1px solid var(--ui-border)';menu.appendChild(p);}
     document.addEventListener('contextmenu',e=>{
       if(e.target.closest('.aspro-panel') && !e.target.matches('input,textarea'))return;
       if(e.target.closest('input[type="password"]'))return;
@@ -41,10 +42,15 @@
       e.preventDefault();menu.replaceChildren();
       const entries=[['cut','Cut',state.edit && !!text],['copy','Copy',!!text],['paste','Paste',state.edit],['all','Select all',true],['undo','Undo',state.edit],['redo','Redo',state.edit]];
       entries.forEach(([name,label,enabled])=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','menuitem');b.textContent=label;b.disabled=!enabled;b.addEventListener('click',()=>action(name));menu.appendChild(b);});
+      if(state.edit){
+        try{
+          if(window.AsproSpelling && typeof window.AsproSpelling.appendToMenu==='function')window.AsproSpelling.appendToMenu(menu,Object.assign({},state));
+          else spellingMessage('module is not loaded.');
+        }catch(error){spellingMessage('menu integration failed.');console.error('Spelling menu:',error);}
+      }
       opening=true;const id=++openingId;
       menu.hidden=false;menu.style.left='0px';menu.style.top='0px';const r=menu.getBoundingClientRect();menu.style.left=Math.max(4,Math.min(e.clientX,window.innerWidth-r.width-8))+'px';menu.style.top=Math.max(4,Math.min(e.clientY,window.innerHeight-r.height-8))+'px';
       menu.querySelector('button:not(:disabled)').focus({preventScroll:true});
-      // Let queued focus/layout scroll events settle without dismissing the menu.
       requestAnimationFrame(()=>requestAnimationFrame(()=>{if(id===openingId)opening=false;}));
     });
     document.addEventListener('pointerdown',e=>{if(!menu.contains(e.target))hide();});
@@ -54,6 +60,7 @@
     document.addEventListener('touchmove',e=>{if(!menu.contains(e.target))hide();},true);
     menu.addEventListener('keydown',e=>{if(e.key==='Escape'){hide();restore();e.stopPropagation();return;}if(!['ArrowDown','ArrowUp'].includes(e.key))return;e.preventDefault();const bs=Array.from(menu.querySelectorAll('button:not(:disabled)'));const i=bs.indexOf(document.activeElement);bs[(i+(e.key==='ArrowDown'?1:bs.length-1))%bs.length].focus({preventScroll:true});});
     document.addEventListener('keydown',e=>{if(e.key==='Escape')hide();});
+    window.__asproContextMenuVersion=2;
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

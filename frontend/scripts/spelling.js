@@ -1,4 +1,4 @@
-/* Explicit local spelling suggestions. Only the selected word/caret word is checked. */
+/* Explicit spelling hook: the menu builder supplies its captured field and selection. */
 (function(){
  'use strict';
  const wordPattern=/^[\p{Script=Latin}\p{M}]+(?:['’-][\p{Script=Latin}\p{M}]+)*$/u;
@@ -13,21 +13,21 @@
   let language='en',dirty=false,request=0;
   async function load(){if(!window.pywebview || !window.pywebview.api)return;try{const c=await window.pywebview.api.get_config();if(!dirty)language=c.spelling_preferences && c.spelling_preferences.language==='fr'?'fr':'en';}catch(e){}}
   window.addEventListener('pywebviewready',load);load();
-  document.addEventListener('contextmenu',event=>{
-   const field=event.target.closest('textarea,input');const menu=document.getElementById('aspro-context');
-   if(!menu || menu.hidden || !field || field.type==='password' || field.readOnly || field.disabled || field.selectionStart===null)return;
-   const snapshot=field.value,range=selectedWord(snapshot,field.selectionStart,field.selectionEnd);
-   const section=document.createElement('div');section.style.cssText='border-top:1px solid var(--ui-border);margin-top:5px;padding-top:5px';
+  function appendToMenu(menu,state){
+   const field=state.field;if(!state.edit || !field || field.type==='password')return;
+   const snapshot=state.value,range=selectedWord(snapshot,state.start,state.end);
+   const section=document.createElement('div');section.dataset.spellingSection='2';section.style.cssText='border-top:1px solid var(--ui-border);margin-top:5px;padding-top:5px';
    const label=document.createElement('label');label.textContent='Spelling (offline) ';label.style.cssText='display:block;padding:4px 8px;font-size:12px';
    const select=document.createElement('select');select.setAttribute('aria-label','Spelling language');select.style.cssText='width:100%;background:var(--ui-surface);color:var(--ui-text);border:1px solid var(--ui-border);padding:4px';
    for(const [id,name] of [['en','English'],['fr','French']]){const o=document.createElement('option');o.value=id;o.textContent=name;select.appendChild(o);}select.value=language;label.appendChild(select);section.appendChild(label);
    const results=document.createElement('div');section.appendChild(results);menu.appendChild(section);menu.style.maxHeight='min(65vh,420px)';menu.style.overflowY='auto';
-   function fit(){const r=menu.getBoundingClientRect();menu.style.top=Math.max(4,Math.min(r.top,window.innerHeight-r.height-8))+'px';}
+   function fit(){if(menu.hidden)return;const r=menu.getBoundingClientRect();menu.style.top=Math.max(4,Math.min(r.top,window.innerHeight-r.height-8))+'px';}
    function status(text){results.replaceChildren();const p=document.createElement('p');p.style.cssText='font-size:12px;padding:5px 8px';p.textContent=text;results.appendChild(p);fit();}
    function notice(t){if(typeof showToast==='function')showToast(t);}
    async function query(){
     const id=++request;
     if(!range){status('Select an English or French word, or place the caret inside one.');return;}
+    if(!window.pywebview || !window.pywebview.api || typeof window.pywebview.api.get_spelling_suggestions!=='function'){status('Spelling backend is unavailable. Update both backend and frontend files.');return;}
     status('Checking '+range.word+'…');
     try{
      const r=await window.pywebview.api.get_spelling_suggestions(range.word,language);
@@ -46,8 +46,8 @@
    }
    select.onchange=async()=>{language=select.value;dirty=true;const prefs={language};if(typeof globalConfig!=='undefined' && globalConfig)globalConfig.spelling_preferences=prefs;query();try{const ok=await window.pywebview.api.save_config({spelling_preferences:prefs});if(!ok)throw Error();}catch(e){notice('Could not save spelling language.');}};
    query();
-  });
-  window.__asproSpellingReady=true;
+  }
+  window.AsproSpelling={version:2,appendToMenu};window.__asproSpellingReady=true;
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
