@@ -49,7 +49,19 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),
   await page.waitForFunction(()=>window.savedPreferences.some(p=>p.font_size===18 && p.theme==='paper'));
   await page.keyboard.press('Escape');
   const input=page.locator('#prompt-input');await input.fill('hello world');
-  async function menu(start,end){await input.evaluate((el,range)=>{el.focus();el.setSelectionRange(range[0],range[1]);},[start,end]);await input.dispatchEvent('contextmenu',{clientX:100,clientY:100});}
+  const settle=()=>page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  async function menu(start,end){
+   await input.scrollIntoViewIfNeeded();
+   await input.evaluate((el,range)=>{el.focus({preventScroll:true});el.setSelectionRange(range[0],range[1]);},[start,end]);
+   await settle();
+   const rect=await input.boundingBox();assert.ok(rect,'Composer must be visible before opening its menu');
+   await input.dispatchEvent('contextmenu',{clientX:rect.x+Math.min(10,rect.width/2),clientY:rect.y+Math.min(10,rect.height/2)});
+   await settle();
+   assert.equal(await page.locator('#aspro-context').isVisible(),true,'Context menu must stay open after focus/layout settles');
+  }
+  await menu(0,5);
+  await page.evaluate(()=>document.dispatchEvent(new Event('scroll')));
+  assert.equal(await page.locator('#aspro-context').isVisible(),false,'Later scrolling must still dismiss the menu');
   await menu(0,5);await page.locator('#aspro-context').getByRole('menuitem',{name:'Copy',exact:true}).click();
   await page.waitForFunction(()=>window.clipText==='hello');assert.equal(await input.inputValue(),'hello world');
   await menu(0,5);await page.locator('#aspro-context').getByRole('menuitem',{name:'Cut',exact:true}).click();
@@ -62,7 +74,7 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),
   await page.waitForFunction(()=>document.documentElement.dataset.asproTheme==='paper');
   assert.equal(await page.evaluate(()=>document.documentElement.style.getPropertyValue('--ui-font')),'18px');
   assert.deepEqual(errors,[]);
-  console.log('Actual page startup, theme UI, saved preferences, copy/cut/paste and undo passed with simulated services.');
+  console.log('Page startup, themes, persistent preferences, menu stability, scroll dismissal and clipboard actions passed with simulated services.');
  }finally{
   fs.mkdirSync('test-results',{recursive:true});await page.screenshot({path:'test-results/themes-page.png',fullPage:true}).catch(()=>{});
   fs.writeFileSync('test-results/browser-errors.json',JSON.stringify(errors,null,2));
