@@ -25,13 +25,19 @@ class SpellingMixin:
         if SpellChecker is None:
             return {"ok": False, "suggestions": [], "message": "Spelling dictionaries are missing. Install requirements.txt and rebuild the app."}
         try:
-            key = word.lower().replace("’", "'")
             with _LOCK:
                 engine = _checker(language)
+        except Exception as error:
+            print(f"Spelling dictionary initialization failed: {type(error).__name__}: {error}")
+            return {"ok": False, "error": "dictionary_load", "suggestions": [], "message": f"Dictionary initialization failed ({type(error).__name__}). See the VS Code terminal for details."}
+        try:
+            key = word.lower().replace("’", "'")
+            with _LOCK:
                 known = bool(engine.known([key]))
-                candidates = [] if known else sorted(engine.candidates(key) or [], key=lambda c: (-engine.word_probability(c), c))[:5]
+                candidates = [] if known else sorted(engine.candidates(key) or [], key=lambda c: (-engine.word_usage_frequency(c), c))[:5]
             if word.isupper(): candidates = [c.upper() for c in candidates]
             elif word.istitle(): candidates = [c.title() for c in candidates]
             return {"ok": True, "known": known, "suggestions": candidates, "message": "Already in this dictionary." if known else "No close suggestions." if not candidates else "Choose a replacement:"}
-        except Exception:
-            return {"ok": False, "suggestions": [], "message": "Could not load the local spelling dictionary. Reinstall requirements.txt or rebuild the app."}
+        except Exception as error:
+            print(f"Spelling suggestion processing failed: {type(error).__name__}: {error}")
+            return {"ok": False, "error": "suggestion_processing", "suggestions": [], "message": f"Dictionary loaded, but suggestions failed ({type(error).__name__}). See the VS Code terminal for details."}
