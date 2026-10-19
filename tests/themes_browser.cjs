@@ -39,7 +39,8 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),
   await page.addStyleTag({content:'.hidden{display:none!important}'});
   await page.waitForFunction(()=>window.__asproFeaturesReady || window.__asproFeaturesError);
   assert.equal(await page.evaluate(()=>window.__asproFeaturesError),undefined);
-  assert.equal(await page.locator('#aspro-feature-status').textContent(),'Themes preview 2: ready');
+  assert.equal(await page.locator('#aspro-feature-status').textContent(),'Models preview 1: ready');
+  assert.equal(await page.evaluate(()=>window.__asproModelFavoritesVersion),1);
   await page.waitForFunction(()=>document.documentElement.dataset.asproTheme==='ocean');
   await page.getByRole('button',{name:'Appearance',exact:true}).click();
   await page.locator('#aspro-theme').selectOption('paper');
