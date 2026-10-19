@@ -12,16 +12,26 @@
     let tail = Promise.resolve(), current = null, binding = null, error = '', switching = 0;
     let backendProfile = null, lastNotice = '', epoch = 0;
     const clone = value => JSON.parse(JSON.stringify(value));
+    let statusTimer = null;
     function status(text, notify) {
+      if (statusTimer !== null) { clearTimeout(statusTimer); statusTimer = null; }
       let node = document.getElementById('chat-model-memory-status');
       const picker = document.getElementById('active-model-display');
       if (!node && picker && picker.parentElement) {
         node = document.createElement('div'); node.id = 'chat-model-memory-status';
         node.setAttribute('role', 'status'); node.setAttribute('aria-live', 'polite');
-        node.style.cssText = 'position:absolute;bottom:calc(100% + 8px);right:0;max-width:360px;font:11px Segoe UI,Arial;color:inherit;background:inherit;padding:4px 8px;border:1px solid #64748b;border-radius:6px';
+        node.style.cssText = 'position:absolute;bottom:calc(100% + 8px);right:0;max-width:360px;font:11px Segoe UI,Arial;color:inherit;background:inherit;padding:4px 8px;border:1px solid #64748b;border-radius:6px;cursor:pointer';
         picker.parentElement.appendChild(node);
       }
-      if (node) node.textContent = text;
+      if (node) {
+        node.textContent = text;
+        const dismiss = () => {
+          if (statusTimer !== null) { clearTimeout(statusTimer); statusTimer = null; }
+          if (document.getElementById('chat-model-memory-status') === node) node.remove();
+        };
+        node.onclick = dismiss;
+        statusTimer = setTimeout(dismiss, 5000);
+      }
       if (picker) picker.title = text;
       if (notify && typeof showToast === 'function') showToast(text);
     }
