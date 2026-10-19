@@ -7,8 +7,9 @@ from .documents import DocumentsMixin
 from .search import SearchMixin
 from .generation import GenerationMixin
 from .spelling import SpellingMixin
+from .model_preferences import ModelPreferencesMixin
 
-class ChatEngine(StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin):
+class ChatEngine(StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin):
     def __init__(self):
         self.file_lock = threading.Lock()
         self.stream_lock = threading.Lock()
@@ -38,4 +39,3 @@ class ChatEngine(StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, Sear
         self.workspace_meta = []
         self.bm25_engine = None
         self.session_files = {}
-
