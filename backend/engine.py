@@ -8,8 +8,11 @@ from .search import SearchMixin
 from .generation import GenerationMixin
 from .spelling import SpellingMixin
 from .model_preferences import ModelPreferencesMixin
+from .chat_models import ChatModelMemoryMixin
 
-class ChatEngine(StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin):
+class ChatEngine(StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin):
+    _chat_model_metadata_file = METADATA_FILE
+
     def __init__(self):
         self.file_lock = threading.Lock()
         self.stream_lock = threading.Lock()
