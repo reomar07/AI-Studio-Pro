@@ -1,4 +1,4 @@
-/* Spelling preview 2: verify the menu and spelling hook versions match. */
+/* Model favorites preview 1; keep existing appearance, voice and spelling hooks. */
 if (window.tailwind) window.tailwind.config = { darkMode: 'class' };
 (function () {
   'use strict';
@@ -6,7 +6,7 @@ if (window.tailwind) window.tailwind.config = { darkMode: 'class' };
   window.addEventListener('error',event=>{if(String(event.filename||'').includes('frontend/scripts/'))errors.push(event.message||'Script error');});
   async function start(){
     if(document.getElementById('aspro-feature-status'))return;
-    const badge=document.createElement('button');badge.id='aspro-feature-status';badge.type='button';badge.textContent='Spelling preview 2: loading';
+    const badge=document.createElement('button');badge.id='aspro-feature-status';badge.type='button';badge.textContent='Models preview 1: loading';
     badge.style.cssText='position:fixed;top:48px;right:12px;z-index:90;padding:4px 9px;border:1px solid #64748b;border-radius:7px;background:#1e293b;color:#fff;font:11px Segoe UI,Arial;cursor:pointer';
     document.body.appendChild(badge);
     function loadScript(file){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='frontend/scripts/'+file+'?preview=spelling-2';s.onload=resolve;s.onerror=()=>reject(new Error('Could not load '+file));document.body.appendChild(s);});}
@@ -20,7 +20,9 @@ if (window.tailwind) window.tailwind.config = { darkMode: 'class' };
       if(!window.__asproVoiceReady)throw new Error(errors.join('; ') || 'Voice initialization failed');
       await loadScript('spelling.js');
       if(!window.AsproSpelling || window.AsproSpelling.version!==2)throw new Error('Spelling hook version mismatch. Replace the whole frontend folder.');
-      badge.textContent='Themes preview 2: ready';badge.dataset.spellingPreview='2';badge.style.background='#14532d';badge.title='Themes, voice and direct spelling menu hook v2 loaded';
+      await loadScript('model_favorites.js');
+      if(window.__asproModelFavoritesVersion!==1)throw new Error('Model shortcuts module did not initialize. Replace the whole frontend folder.');
+      badge.textContent='Models preview 1: ready';badge.dataset.spellingPreview='2';badge.style.background='#14532d';badge.title='Interface modules loaded: themes, voice, spelling menu and model shortcuts. Dictionary and provider availability are checked when used.';
       badge.onclick=()=>{const d=document.getElementById('aspro-preferences');if(d && !d.open)d.showModal();};
       window.__asproFeaturesReady=true;
     }catch(error){
