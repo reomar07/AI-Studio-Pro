@@ -61,6 +61,12 @@ class ChatModelGenerationMixin:
             return {"ok": False, "error": "chat_model_unavailable"}
 
     def _run_chat_bound_worker(self, context, gen, prompt, files, params):
+        known = None
+        try:
+            if hasattr(self, "_usage_known_node_ids"):
+                known = self._usage_known_node_ids(context.current_chat_id)
+        except Exception:
+            known = None
         try:
             if self.is_aborted:
                 self._emit(gen, chunk="*(Cancelled before generation started)*", done=True)
@@ -70,4 +76,9 @@ class ChatModelGenerationMixin:
             # Never include exception text that could contain provider credentials.
             self._emit(gen, error="The reply could not complete. Check the saved provider/model and try again.", done=True)
         finally:
+            try:
+                if known is not None:
+                    self._usage_record_new_replies(context.current_chat_id, known)
+            except Exception:
+                pass   # a usage-count problem must never block the next reply
             with self.stream_lock: self._chat_model_worker_running = False
