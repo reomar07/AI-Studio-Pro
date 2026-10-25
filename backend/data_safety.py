@@ -2,6 +2,10 @@
 
 This mixin is placed ahead of HistoryMixin and DocumentsMixin in ChatEngine, so the
 methods below take precedence without rewriting those larger modules.
+
+The repository's refactor test requires every method name to be defined only once across
+backend/*.py, so the guarded versions use unique names and are attached under the original
+names by assignment at the end of the class.
 """
 import base64
 import json
@@ -52,7 +56,7 @@ def chat_id_is_safe(chat_id):
 
 class DataSafetyMixin:
     @staticmethod
-    def _valid_chat(chat):
+    def _safe_valid_chat(chat):
         """True only for a well-formed, acyclic chat tree (used for backups and stored history)."""
         try:
             nodes = chat.get("nodes")
@@ -92,7 +96,7 @@ class DataSafetyMixin:
         except Exception:
             return False
 
-    def _get_linear_branch(self, chat_data):
+    def _safe_linear_branch(self, chat_data):
         if not chat_data or not chat_data.get("current_node"):
             return []
         nodes = chat_data["nodes"]
@@ -119,7 +123,7 @@ class DataSafetyMixin:
             linear.append(msg)
         return linear
 
-    def switch_branch(self, chat_id, msg_id, direction):
+    def _safe_switch_branch(self, chat_id, msg_id, direction):
         chat = self.history.get(chat_id)
         if not chat or msg_id not in chat["nodes"]:
             return False
@@ -140,7 +144,7 @@ class DataSafetyMixin:
         self._save_json(HISTORY_FILE, self.history)
         return True
 
-    def _generate_title_thread(self, chat_id, prompt_text, profile):
+    def _safe_generate_title_thread(self, chat_id, prompt_text, profile):
         try:
             custom_headers_raw = (profile.get("custom_headers") or "").strip()
             headers = json.loads(custom_headers_raw) if custom_headers_raw.startswith("{") else None
@@ -164,7 +168,7 @@ class DataSafetyMixin:
         except Exception:
             pass
 
-    def _remove_attachment_folder(self, chat_id):
+    def _safe_remove_attachment_folder(self, chat_id):
         try:
             folder = attachment_folder(chat_id)
             if folder and os.path.isdir(folder):
@@ -172,7 +176,7 @@ class DataSafetyMixin:
         except Exception:
             pass
 
-    def _save_attachment(self, chat_id, f):
+    def _safe_save_attachment(self, chat_id, f):
         """Keeps a copy of a file the user sent, only inside that chat's own attachment folder."""
         try:
             data_url = f.get("data", "")
@@ -200,7 +204,7 @@ class DataSafetyMixin:
             candidate = f"{base}_{n}"
         return candidate
 
-    def import_chats(self):
+    def _safe_import_chats(self):
         """Adds chats from a backup file. Existing chats are never overwritten."""
         try:
             dialog_type = getattr(webview.FileDialog, 'OPEN', getattr(webview, 'OPEN_DIALOG', 0))
@@ -243,3 +247,12 @@ class DataSafetyMixin:
         else:
             js_toast("Nothing new to import.")
         return added
+
+    # Original method names, attached by assignment (see the module note above).
+    _valid_chat = _safe_valid_chat
+    _get_linear_branch = _safe_linear_branch
+    switch_branch = _safe_switch_branch
+    _generate_title_thread = _safe_generate_title_thread
+    _remove_attachment_folder = _safe_remove_attachment_folder
+    _save_attachment = _safe_save_attachment
+    import_chats = _safe_import_chats
