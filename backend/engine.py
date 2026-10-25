@@ -10,8 +10,9 @@ from .spelling import SpellingMixin
 from .model_preferences import ModelPreferencesMixin
 from .chat_models import ChatModelMemoryMixin
 from .chat_generation import ChatModelGenerationMixin
+from .data_safety import DataSafetyMixin
 
-class ChatEngine(StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin):
+class ChatEngine(DataSafetyMixin, StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin):
     _chat_model_metadata_file = METADATA_FILE
     send_prompt_stream = ChatModelGenerationMixin.send_chat_prompt_stream
 

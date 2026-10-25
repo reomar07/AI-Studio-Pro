@@ -104,7 +104,13 @@
       const cfg = await original.get_config(); backendProfile = cfg.active_profile_id || 'default';
       return project(cfg);
     };
+    // Appearance, voice and spelling save small objects such as {ui_preferences: ...}. Only a save that
+    // carries provider profiles can change this chat's model, so everything else goes straight through.
+    function changesProviderSettings(cfg) {
+      return !!cfg && typeof cfg === 'object' && ('profiles' in cfg || 'active_profile_id' in cfg);
+    }
     if (original.save_config && original.set_chat_model_binding) api.save_config = function (cfg) {
+      if (!changesProviderSettings(cfg)) return original.save_config(cfg);
       if (switching) { status('Wait for the chat model to finish restoring before changing it.', true); return Promise.resolve(false); }
       const target = current, next = clone(cfg), pid = next.active_profile_id || 'default';
       const p = next.profiles && next.profiles[pid];

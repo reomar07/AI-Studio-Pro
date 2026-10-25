@@ -30,3 +30,4 @@ jobs:
           node tests/spelling_core.test.cjs
           node tests/chat_model_memory_frontend.test.cjs
           node tests/chat_model_memory_status.test.cjs
+          node tests/chat_model_memory_preferences.test.cjs
