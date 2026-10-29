@@ -17,7 +17,7 @@ if (window.tailwind) window.tailwind.config = { darkMode: 'class' };
       await loadScript('context_menu.js');
       if(window.__asproContextMenuVersion!==2)throw new Error('Menu version mismatch. Replace the whole frontend folder.');
       await loadScript('speech.js');
-      if(!window.__asproVoiceReady)throw new Error('Voice initialization failed');
+      if(!window.__asproVoiceReady)throw new Error(errors.join('; ') || 'Voice initialization failed');
       await loadScript('spelling.js');
       if(!window.AsproSpelling || window.AsproSpelling.version!==2)throw new Error('Spelling hook version mismatch. Replace the whole frontend folder.');
       await loadScript('model_favorites.js');
