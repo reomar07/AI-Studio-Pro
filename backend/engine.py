@@ -12,8 +12,9 @@ from .chat_models import ChatModelMemoryMixin
 from .chat_generation import ChatModelGenerationMixin
 from .data_safety import DataSafetyMixin
 from .usage_log import UsageLogMixin
+from .backup_schedule import BackupScheduleMixin
 
-class ChatEngine(DataSafetyMixin, StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin, UsageLogMixin):
+class ChatEngine(DataSafetyMixin, StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin, UsageLogMixin, BackupScheduleMixin):
     _chat_model_metadata_file = METADATA_FILE
     send_prompt_stream = ChatModelGenerationMixin.send_chat_prompt_stream
 
