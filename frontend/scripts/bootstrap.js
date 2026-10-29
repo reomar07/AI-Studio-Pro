@@ -26,7 +26,9 @@ if (window.tailwind) window.tailwind.config = { darkMode: 'class' };
       if(window.__asproUsageSummaryVersion!==1)throw new Error('Token summary module did not initialize. Replace the whole frontend folder.');
       await loadScript('backup_schedule.js');
       if(window.__asproBackupScheduleVersion!==1)throw new Error('Backup settings module did not initialize. Replace the whole frontend folder.');
-      badge.textContent='Models preview 1: ready';badge.dataset.spellingPreview='2';badge.style.background='#14532d';badge.title='Interface modules loaded: themes, voice, spelling menu, model shortcuts, token summary and backup settings. Dictionary and provider availability are checked when used.';
+      await loadScript('chat_tags.js');
+      if(window.__asproChatTagsVersion!==1)throw new Error('Chat tags module did not initialize. Replace the whole frontend folder.');
+      badge.textContent='Models preview 1: ready';badge.dataset.spellingPreview='2';badge.style.background='#14532d';badge.title='Interface modules loaded: themes, voice, spelling menu, model shortcuts, token summary, backup settings and chat tags. Dictionary and provider availability are checked when used.';
       badge.onclick=()=>{const d=document.getElementById('aspro-preferences');if(d && !d.open)d.showModal();};
       window.__asproFeaturesReady=true;
     }catch(error){
