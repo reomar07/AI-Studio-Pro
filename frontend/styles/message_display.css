@@ -1,0 +1,15 @@
+/* Message display settings (frontend/scripts/message_display.js) */
+#aspro-message-display-controls{border-top:1px solid var(--ui-border,#52525b);margin-top:14px;padding-top:10px}
+#aspro-message-display-controls h3{font-size:14px;font-weight:600;margin:0 0 6px}
+#aspro-message-display-controls label{display:block;margin:8px 0;font-size:13px}
+#aspro-message-display-controls select{display:block;width:100%;margin-top:4px;padding:5px;border-radius:6px;border:1px solid var(--ui-border,#52525b);background:var(--ui-surface,#2a2a2c);color:var(--ui-text,#f4f4f5)}
+#aspro-message-display-controls .aspro-inline{display:flex;gap:8px;align-items:center}
+#aspro-message-display-controls p{font-size:12px;opacity:.75;margin:6px 0}
+.aspro-message-time{display:none;margin-top:6px;font-size:11px;opacity:.65;text-align:right}
+html[data-aspro-timestamps="true"] .aspro-message-time{display:block}
+html[data-aspro-spacing="comfortable"] #chat-messages>.aspro-message{margin-top:0!important;margin-bottom:1.75rem!important}
+html[data-aspro-spacing="comfortable"] #chat-messages .aspro-message .prose p{margin-top:.8em;margin-bottom:.8em;line-height:1.75}
+html[data-aspro-spacing="comfortable"] #chat-messages .aspro-message .prose li{margin-top:.4em;margin-bottom:.4em}
+html[data-aspro-spacing="compact"] #chat-messages>.aspro-message{margin-top:0!important;margin-bottom:.4rem!important}
+html[data-aspro-spacing="compact"] #chat-messages .aspro-message .prose p{margin-top:.3em;margin-bottom:.3em;line-height:1.4}
+html[data-aspro-spacing="compact"] #chat-messages .aspro-message .prose li{margin-top:.1em;margin-bottom:.1em}
