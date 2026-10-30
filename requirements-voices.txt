@@ -1,0 +1,2 @@
+# Optional local neural speech engine; review upstream licenses before redistribution.
+piper-tts
