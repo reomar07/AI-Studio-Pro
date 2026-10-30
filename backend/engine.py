@@ -14,11 +14,13 @@ from .data_safety import DataSafetyMixin
 from .usage_log import UsageLogMixin
 from .backup_schedule import BackupScheduleMixin
 from .chat_tags import ChatTagsMixin
+from .message_timestamps import MessageTimestampsMixin
 
-class ChatEngine(DataSafetyMixin, StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin, UsageLogMixin, BackupScheduleMixin, ChatTagsMixin):
+class ChatEngine(DataSafetyMixin, StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin, UsageLogMixin, BackupScheduleMixin, ChatTagsMixin, MessageTimestampsMixin):
     _chat_model_metadata_file = METADATA_FILE
     _chat_tags_metadata_file = METADATA_FILE
     send_prompt_stream = ChatModelGenerationMixin.send_chat_prompt_stream
+    _add_node = MessageTimestampsMixin._timestamp_add_node
 
     def __init__(self):
         self.file_lock = threading.Lock()
