@@ -43,8 +43,10 @@ if (window.tailwind) window.tailwind.config = {darkMode: 'class'};
         await loadScript(file);
         if (!check()) throw new Error(file + ' did not initialize. Replace the whole frontend folder.');
       }
+      await loadScript('settings_hub.js');
+      if (errors.length) throw new Error(errors.join('; '));
       badge.textContent = 'Web/index/voices: ready'; badge.dataset.spellingPreview = '2'; badge.style.background = '#14532d';
-      badge.title = 'Interface modules loaded, including index controls, page selection and offline voice controls. Voice engine installation, downloads and playback must be checked separately.';
+      badge.title = 'Interface modules loaded. Voice engine installation, downloads and playback must be checked separately.';
       badge.onclick = () => { const d = document.getElementById('aspro-preferences'); if (d && !d.open) d.showModal(); };
       window.__asproFeaturesReady = true;
     } catch (error) {
