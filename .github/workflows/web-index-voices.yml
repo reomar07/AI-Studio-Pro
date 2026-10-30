@@ -1,0 +1,28 @@
+name: Web index and offline voice checks
+on:
+  push:
+    branches: [feature/web-index-voices]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: python -m pip install -r requirements.txt
+      - name: Python regression tests
+        run: python -m unittest discover -s tests -v
+      - name: JavaScript syntax checks
+        run: |
+          for f in frontend/scripts/*.js tests/*.cjs; do node --check "$f"; done
+      - name: Frontend helper and startup integration smoke tests
+        run: node tests/web_index_voices_integration.test.cjs

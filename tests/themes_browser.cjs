@@ -30,6 +30,7 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),
    window.pywebview={api:{
     get_config:async()=>({active_profile_id:'default',profiles:{default:{name:'Test',model_name:'test',base_url:'https://example.invalid/v1',api_key:''}},ui_preferences:JSON.parse(localStorage.getItem('__test_saved_ui')||'{"theme":"ocean","accent":"#3b82f6","font_size":14,"chat_width":900}')}),
     save_config:async cfg=>{if(cfg.ui_preferences){window.savedPreferences.push(cfg.ui_preferences);localStorage.setItem('__test_saved_ui',JSON.stringify(cfg.ui_preferences));}return true;},
+    offline_voices_status:async()=>({engine:false,hint:'Piper is not installed in this simulated test.',folder:'test-voices',voices:[]}),
     get_history:async()=>({}),get_metadata:async()=>({}),list_models:async()=>({ok:true,models:[{id:'test',name:'Test'}]}),get_version:async()=>'1.2.1'
    }};
    window.addEventListener('load',()=>window.dispatchEvent(new Event('pywebviewready')));
@@ -39,10 +40,17 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),
   await page.addStyleTag({content:'.hidden{display:none!important}'});
   await page.waitForFunction(()=>window.__asproFeaturesReady || window.__asproFeaturesError);
   assert.equal(await page.evaluate(()=>window.__asproFeaturesError),undefined);
-  assert.equal(await page.locator('#aspro-feature-status').textContent(),'Models preview 1: ready');
+  assert.equal(await page.locator('#aspro-feature-status').textContent(),'Web/index/voices: ready');
   assert.equal(await page.evaluate(()=>window.__asproModelFavoritesVersion),1);
+  assert.equal(await page.evaluate(()=>window.__asproSettingsHubVersion),1);
   await page.waitForFunction(()=>document.documentElement.dataset.asproTheme==='ocean');
-  await page.getByRole('button',{name:'Appearance',exact:true}).click();
+  const sidebar=page.locator('aside > div:last-child');
+  assert.equal(await sidebar.getByRole('button',{name:'Settings',exact:true}).count(),1);
+  await sidebar.getByRole('button',{name:'Settings',exact:true}).click();
+  assert.equal(await page.locator('#aspro-settings-hub').isVisible(),true);
+  await page.locator('#aspro-settings-hub').getByRole('button',{name:'Appearance',exact:true}).click();
+  assert.equal(await page.locator('#aspro-settings-hub').isVisible(),false);
+  assert.equal(await page.locator('#aspro-preferences').isVisible(),true);
   await page.locator('#aspro-theme').selectOption('paper');
   assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('dark')),false);
   assert.equal(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor),'rgb(250, 245, 233)');
@@ -75,7 +83,7 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),
   await page.waitForFunction(()=>document.documentElement.dataset.asproTheme==='paper');
   assert.equal(await page.evaluate(()=>document.documentElement.style.getPropertyValue('--ui-font')),'18px');
   assert.deepEqual(errors,[]);
-  console.log('Page startup, themes, persistent preferences, menu stability, scroll dismissal and clipboard actions passed with simulated services.');
+  console.log('Page startup, Settings hub navigation, themes, persistent preferences, menu stability, scroll dismissal and clipboard actions passed with simulated services.');
  }finally{
   fs.mkdirSync('test-results',{recursive:true});await page.screenshot({path:'test-results/themes-page.png',fullPage:true}).catch(()=>{});
   fs.writeFileSync('test-results/browser-errors.json',JSON.stringify(errors,null,2));
