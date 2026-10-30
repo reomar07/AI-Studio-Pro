@@ -19,13 +19,15 @@ from .workspace_index import WorkspaceIndexMixin
 from .web_pages import WebPagesMixin
 from .offline_voices import OfflineVoicesMixin
 from . import voice_library_catalog
+from .web_privacy import WebPrivacyMixin
 
-class ChatEngine(DataSafetyMixin, StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin, UsageLogMixin, BackupScheduleMixin, ChatTagsMixin, MessageTimestampsMixin, WorkspaceIndexMixin, WebPagesMixin, OfflineVoicesMixin):
+class ChatEngine(DataSafetyMixin, StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin, UsageLogMixin, BackupScheduleMixin, ChatTagsMixin, MessageTimestampsMixin, WorkspaceIndexMixin, WebPagesMixin, OfflineVoicesMixin, WebPrivacyMixin):
     _chat_model_metadata_file = METADATA_FILE
     _chat_tags_metadata_file = METADATA_FILE
     send_prompt_stream = ChatModelGenerationMixin.send_chat_prompt_stream
     _add_node = MessageTimestampsMixin._timestamp_add_node
     _index_folder = WorkspaceIndexMixin._index_folder_remembered
+    web_provider_notice = WebPrivacyMixin._privacy_provider_notice
 
     def __init__(self):
         self.file_lock = threading.Lock()
