@@ -18,6 +18,7 @@ from .message_timestamps import MessageTimestampsMixin
 from .workspace_index import WorkspaceIndexMixin
 from .web_pages import WebPagesMixin
 from .offline_voices import OfflineVoicesMixin
+from . import voice_library_catalog
 
 class ChatEngine(DataSafetyMixin, StorageMixin, ProfilesMixin, HistoryMixin, DocumentsMixin, SearchMixin, GenerationMixin, SpellingMixin, ModelPreferencesMixin, ChatModelMemoryMixin, ChatModelGenerationMixin, UsageLogMixin, BackupScheduleMixin, ChatTagsMixin, MessageTimestampsMixin, WorkspaceIndexMixin, WebPagesMixin, OfflineVoicesMixin):
     _chat_model_metadata_file = METADATA_FILE
