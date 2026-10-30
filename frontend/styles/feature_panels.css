@@ -1,0 +1,24 @@
+/* Workspace index controls, page-choosing dialog and offline voices */
+.aspro-index-controls{display:inline-flex;align-items:center;gap:6px;margin-left:8px}
+#aspro-index-status{font-size:11px;opacity:.8}
+.aspro-index-button{font-size:11px;padding:1px 7px;border:1px solid var(--ui-border,#52525b);border-radius:6px;background:transparent;color:inherit;cursor:pointer}
+.aspro-index-button:disabled{opacity:.45;cursor:default}
+.aspro-feature-section{border-top:1px solid var(--ui-border,#52525b);margin-top:14px;padding-top:10px}
+.aspro-feature-section h3{font-size:14px;font-weight:600;margin:0 0 6px}
+.aspro-feature-section p{font-size:12px;opacity:.75;margin:6px 0}
+.aspro-inline{display:flex;gap:8px;align-items:center;font-size:13px}
+.aspro-web-dialog{width:min(640px,92vw)}
+.aspro-web-list{max-height:40vh;overflow:auto;margin:8px 0;display:flex;flex-direction:column;gap:6px}
+.aspro-web-row{display:flex;gap:8px;align-items:flex-start;padding:6px;border:1px solid var(--ui-border,#52525b);border-radius:8px;cursor:pointer}
+.aspro-web-text{display:flex;flex-direction:column;gap:2px;min-width:0;font-size:12px}
+.aspro-web-text small{opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aspro-web-notice{border-top:1px solid var(--ui-border,#52525b);margin-top:8px;padding-top:8px;font-size:12px}
+.aspro-web-notice p{margin:4px 0}
+.aspro-web-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.aspro-voice-dialog{width:min(560px,92vw)}
+.aspro-voice-row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--ui-border,#52525b)}
+.aspro-voice-info{display:flex;flex-direction:column;gap:2px;font-size:13px}
+.aspro-voice-info small,.aspro-voice-note{font-size:11px;opacity:.75}
+.aspro-voice-warning{color:#f59e0b;font-size:12px}
+#aspro-offline-player{position:fixed;top:120px;right:12px;z-index:40;padding:8px;border:1px solid var(--ui-border,#52525b);border-radius:10px;background:var(--ui-sidebar,#1c1c1e);color:var(--ui-text,#f4f4f5);font:12px Segoe UI,Arial;display:flex;gap:6px;align-items:center}
+#aspro-offline-player[hidden]{display:none}
